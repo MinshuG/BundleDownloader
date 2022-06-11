@@ -34,6 +34,7 @@ def main():
     provider = get_provider()
     mappings_file = provider.get_reader("FortniteGame/Config/Windows/CosmeticBundleMapping.ini")
 
+    os.makedirs(DOWNLOAD_LOCATION, exist_ok=True)
     with open(os.path.join(DOWNLOAD_LOCATION, "cosmetic_mappings.ini"), "wb") as f:
         f.write(mappings_file.read())
 
