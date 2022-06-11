@@ -19,9 +19,13 @@ AES_KEY = "0x6615171DA4E596F5511B1A445ADDDCA27A31A67246C30B0743F5739E7670D699"
 
 AUTH_TOKEN = "INSERT YOUR TOKEN HERE" # https://github.com/MixV2/EpicResearch/blob/master/docs/auth/grant_types/authorization_code.md
 
+
+base_url = "https://download.epicgames.com/Builds/Fortnite/Content/CloudDir"
+
 logging.getLogger("UE4Parse").setLevel(logging.INFO)
 logging.getLogger("DLManager").setLevel(logging.INFO)
 logging.getLogger("DLManager").addHandler(logging.StreamHandler())
+
 
 
 def get_provider():
@@ -30,22 +34,7 @@ def get_provider():
     provider.submit_key(FGuid.default(), FAESKey(AES_KEY))
     return provider
 
-def main():
-    provider = get_provider()
-    mappings_file = provider.get_reader("FortniteGame/Config/Windows/CosmeticBundleMapping.ini")
-
-    os.makedirs(DOWNLOAD_LOCATION, exist_ok=True)
-    with open(os.path.join(DOWNLOAD_LOCATION, "cosmetic_mappings.ini"), "wb") as f:
-        f.write(mappings_file.read())
-
-    config = IniOpen(os.path.join(DOWNLOAD_LOCATION, "cosmetic_mappings.ini"))
-
-    bundles = config.read(COSMETIC_ID, "Bundles")
-    if bundles is None:
-        print("bundle not found")
-        exit(1)
-
-    base_url = "https://download.epicgames.com/Builds/Fortnite/Content/CloudDir"
+def get_manifest():
     manifest = "https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/public/assets/Windows/5cb97847cee34581afdbc445400e2f77/FortniteContentBuilds"
     buildinfo = os.path.join(FORTNITE_LOCATION, "Cloud\BuildInfo.ini")
 
@@ -65,7 +54,25 @@ def main():
     manifest_url = content_manifest["items"]["MANIFEST"]["distribution"] + content_manifest["items"]["MANIFEST"]["path"]
 
     manifest = Manifest.read_all(requests.get(manifest_url).content)
+    return manifest
 
+
+def main():
+    provider = get_provider()
+    mappings_file = provider.get_reader("FortniteGame/Config/Windows/CosmeticBundleMapping.ini")
+
+    os.makedirs(DOWNLOAD_LOCATION, exist_ok=True)
+    with open(os.path.join(DOWNLOAD_LOCATION, "cosmetic_mappings.ini"), "wb") as f:
+        f.write(mappings_file.read())
+
+    config = IniOpen(os.path.join(DOWNLOAD_LOCATION, "cosmetic_mappings.ini"))
+
+    bundles = config.read(COSMETIC_ID, "Bundles")
+    if bundles is None:
+        print("bundle not found")
+        exit(1)
+
+    manifest = get_manifest()
     downloader = DLManager(DOWNLOAD_LOCATION, base_url, "./cache")
     downloader.run_analysis(manifest, None, processing_optimization=True, file_install_tag=bundles)
     taskstoremove = []
