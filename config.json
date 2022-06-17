@@ -1,0 +1,9 @@
+{
+    "IGNORE": "token is optional",
+    "token": null,
+    "cosmetics": ["BID_028_SpaceBlack", "BID_028_SpaceBlack"],
+    "FORTNITE_LOCATION": "D:\\Games\\Fortnite\\Versions\\Latest\\Fortnite",
+    "MAIN_AES_KEY": "0x6615171DA4E596F5511B1A445ADDDCA27A31A67246C30B0743F5739E7670D699",
+    "DOWNLOAD_LOCATION": "./downloads",
+    "ContentManifestURL": "https://raw.githubusercontent.com/MinshuG/BundleDownloader/master/ContentManifests/VL5zUdXNxJ-c1sNgH0u5HasOW7cx-Q.manifest"
+}

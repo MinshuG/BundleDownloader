@@ -10,14 +10,6 @@ import requests
 
 from Ini import IniOpen
 
-DOWNLOAD_LOCATION = "./downloads"
-COSMETIC_ID = "BID_028_SpaceBlack"
-
-FORTNITE_LOCATION = "D:\Games\Fortnite\Versions\Latest\Fortnite"
-
-AES_KEY = "0x6615171DA4E596F5511B1A445ADDDCA27A31A67246C30B0743F5739E7670D699"
-
-AUTH_TOKEN = "INSERT YOUR TOKEN HERE" # https://github.com/MixV2/EpicResearch/blob/master/docs/auth/grant_types/authorization_code.md
 
 
 base_url = "https://download.epicgames.com/Builds/Fortnite/Content/CloudDir"
@@ -28,36 +20,44 @@ logging.getLogger("DLManager").addHandler(logging.StreamHandler())
 
 
 
-def get_provider():
-    provider = DefaultFileProvider([os.path.join(FORTNITE_LOCATION, "FortniteGame\Content\Paks\pakChunkEarly-WindowsClient.pak")])
+def get_provider(fortnite_loc, AES_KEY):
+    provider = DefaultFileProvider([os.path.join(fortnite_loc, "FortniteGame\Content\Paks\pakChunkEarly-WindowsClient.pak")])
     provider.initialize()
     provider.submit_key(FGuid.default(), FAESKey(AES_KEY))
     return provider
 
-def get_manifest():
-    manifest = "https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/public/assets/Windows/5cb97847cee34581afdbc445400e2f77/FortniteContentBuilds"
-    buildinfo = os.path.join(FORTNITE_LOCATION, "Cloud\BuildInfo.ini")
 
-    if not os.path.exists(buildinfo):
-        print("BuildInfo.ini not found")
-        exit(1)
+def get_manifest(fortnite_loc, auth_token, override_url=None):
+    if override_url is None:
+        manifest = "https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/public/assets/Windows/5cb97847cee34581afdbc445400e2f77/FortniteContentBuilds"
+        buildinfo = os.path.join(fortnite_loc, "Cloud\BuildInfo.ini")
 
-    buildinfo_config = IniOpen(buildinfo)
-    label = buildinfo_config.read('Content', "Label")
+        if not os.path.exists(buildinfo):
+            print("BuildInfo.ini not found")
+            exit(1)
 
-    content_manifest = requests.get(manifest, params = {"label": label}, headers={"Authorization": "Bearer " + AUTH_TOKEN})
-    if content_manifest.status_code != 200:
-        print(content_manifest.text)
-        exit(1)
-    content_manifest = content_manifest.json()
+        buildinfo_config = IniOpen(buildinfo)
+        label = buildinfo_config.read('Content', "Label")
+        print("getting manifest for label", label)
+        content_manifest = requests.get(manifest, params = {"label": label}, headers={"Authorization": "Bearer " + auth_token})
+        if content_manifest.status_code != 200:
+            print(content_manifest.text)
+            exit(1)
+        content_manifest = content_manifest.json()
 
-    manifest_url = content_manifest["items"]["MANIFEST"]["distribution"] + content_manifest["items"]["MANIFEST"]["path"]
-
-    manifest = Manifest.read_all(requests.get(manifest_url).content)
-    return manifest
+        manifest_url = content_manifest["items"]["MANIFEST"]["distribution"] + content_manifest["items"]["MANIFEST"]["path"]
+        return Manifest.read_all(requests.get(manifest_url).content)
+    else:
+        return Manifest.read_all(requests.get(override_url).content)
 
 
 def main():
+    DOWNLOAD_LOCATION = "./downloads"
+    COSMETIC_ID = "BID_028_SpaceBlack"
+    FORTNITE_LOCATION = "D:\Games\Fortnite\Versions\Latest\Fortnite"
+    AES_KEY = "0x6615171DA4E596F5511B1A445ADDDCA27A31A67246C30B0743F5739E7670D699"
+    AUTH_TOKEN = "INSERT YOUR TOKEN HERE" # https://github.com/MixV2/EpicResearch/blob/master/docs/auth/grant_types/authorization_code.md
+
     provider = get_provider()
     mappings_file = provider.get_reader("FortniteGame/Config/Windows/CosmeticBundleMapping.ini")
 
@@ -87,4 +87,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    exit(0)
