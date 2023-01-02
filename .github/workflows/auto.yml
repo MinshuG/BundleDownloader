@@ -19,27 +19,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install legendary-gl requests
       - name: execute py script
-        id: checkforupdate
         run: |
           python run.py
 
       - shell: pwsh
-          id: check_file_changed
-          run: |
-            # Diff HEAD with the previous commit
-            $diff = git diff --name-only HEAD^ HEAD
+        id: check_file_changed
+        run: |
+          # Diff HEAD with the previous commit
+          $diff = git diff --name-only HEAD^ HEAD
 
-            # Check if a with the .md extension has changed (added, modified, deleted)
-            $SourceDiff = $diff | Where-Object { $_ -match '.md$' }
-            $HasDiff = $SourceDiff.Length -gt 0
+          # Check if a with the .md extension has changed (added, modified, deleted)
+          $SourceDiff = $diff | Where-Object { $_ -match '.md$' }
+          $HasDiff = $SourceDiff.Length -gt 0
 
-            # Set the output named "readme_changed"
-            Write-Host "::set-output name=readme_changed::$HasDiff"
+          # Set the output named "readme_changed"
+          Write-Host "::set-output name=readme_changed::$HasDiff"
 
-      - shell: pwsh
-        # steps.<step_id>.outputs.<output name>
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated Change
+          file_pattern:  ContentManifests/*
         if: steps.check_file_changed.outputs.readme_changed == 'True'
-        - uses: stefanzweifel/git-auto-commit-action@v4
-          with:
-            commit_message: Automated Change
-            file_pattern:  ContentManifests/*
