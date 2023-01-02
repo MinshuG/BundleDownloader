@@ -41,6 +41,9 @@ jobs:
 
           # Set the output named "readme_changed"
           echo "has_updated=$HasDiff" >> $GITHUB_ENV
+      - shell: pwsh
+        run: |
+          echo "has_updated: $env:has_updated"
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
