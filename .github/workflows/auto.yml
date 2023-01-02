@@ -33,8 +33,8 @@ jobs:
         id: check_file_changed
         run: |
           # Diff HEAD with the previous commit
-          echo git diff --name-only
           $diff = git diff --name-only
+          echo $diff
 
           # Check if a with the .md extension has changed (added, modified, deleted)
           $SourceDiff = $diff | Where-Object { $_ -match '.md$' }
