@@ -48,8 +48,8 @@ def get_manifest_info(token, manifest_url, label="Live"):
 
     return data.json()
 
-def get_chunk_manifest(manifest_file, isContentBuildManifest=False):
-    if USE_NEW_MANIFEST or not isContentBuildManifest:
+def get_chunk_manifest(manifest_file):
+    if "elements" in manifest_file:
         for element in manifest_file["elements"]:
             if element["appName"] == "Fortnite":
                 for distribution in element["manifests"]:
@@ -115,7 +115,7 @@ def do_rest_stuff(content_manifest, fn_version):
     filename = os.path.basename(content_manifest['items']['MANIFEST']['path'])
     path = os.path.join("ContentManifests", filename)
     if not os.path.exists(path):
-        chunk_manifest = get_chunk_manifest(content_manifest, isContentBuildManifest=True)
+        chunk_manifest = get_chunk_manifest(content_manifest)
         with open(path, "wb") as f:
             f.write(chunk_manifest)
         s = "|{}|{}|[Manifest](https://github.com/MinshuG/BundleDownloader/blob/master/ContentManifests/{}?raw=true)|".format(fn_version, filename[:-9], filename)
