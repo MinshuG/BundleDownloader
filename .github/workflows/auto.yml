@@ -50,5 +50,4 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Automated Change
-          file_pattern:  ContentManifests/*
         if: env.has_updated == 'True'
