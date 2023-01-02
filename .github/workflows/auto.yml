@@ -1,0 +1,45 @@
+name: auto update manifests
+on:
+  schedule:
+    - cron: "0 0 * * *" # runs at 00:00 UTC everyday
+
+jobs:
+  checkforupdate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+      - name: install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install legendary-gl requests
+      - name: execute py script
+        id: checkforupdate
+        run: |
+          python run.py
+
+      - shell: pwsh
+          id: check_file_changed
+          run: |
+            # Diff HEAD with the previous commit
+            $diff = git diff --name-only HEAD^ HEAD
+
+            # Check if a with the .md extension has changed (added, modified, deleted)
+            $SourceDiff = $diff | Where-Object { $_ -match '.md$' }
+            $HasDiff = $SourceDiff.Length -gt 0
+
+            # Set the output named "readme_changed"
+            Write-Host "::set-output name=readme_changed::$HasDiff"
+
+      - shell: pwsh
+        # steps.<step_id>.outputs.<output name>
+        if: steps.check_file_changed.outputs.readme_changed == 'True'
+        - uses: stefanzweifel/git-auto-commit-action@v4
+          with:
+            commit_message: Automated Change
+            file_pattern:  ContentManifests/*
