@@ -122,6 +122,13 @@ def do_rest_stuff(content_manifest, fn_version):
         with open("ContentManifests\README.md", "a") as f:
             f.write(s + "\n")
         print("Successfully added {} for {}".format(filename, fn_version))
+
+        env_file = os.getenv('GITHUB_ENV')
+        if env_file:
+            with open(env_file, "a") as myfile:
+                myfile.write("has_updated=True\n")
+        else:
+            print("GITHUB_ENV not set")
     else:
         print("{} already exists".format(filename))
 
