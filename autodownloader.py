@@ -119,7 +119,7 @@ def do_rest_stuff(content_manifest, fn_version):
         with open(path, "wb") as f:
             f.write(chunk_manifest)
         s = "|{}|{}|[Manifest](https://github.com/MinshuG/BundleDownloader/blob/master/ContentManifests/{}?raw=true)|".format(fn_version, filename[:-9], filename)
-        with open("ContentManifests\README.md", "a") as f:
+        with open("ContentManifests/README.md", "a") as f:
             f.write(s + "\n")
         print("Successfully added {} for {}".format(filename, fn_version))
 
