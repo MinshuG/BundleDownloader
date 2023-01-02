@@ -41,6 +41,7 @@ jobs:
 
           # Set the output named "readme_changed"
           echo "has_updated=$HasDiff" >> $GITHUB_ENV
+          echo $HasDiff
       - shell: pwsh
         run: |
           echo "has_updated: $env:has_updated"
