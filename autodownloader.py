@@ -127,6 +127,7 @@ def do_rest_stuff(content_manifest, fn_version):
         if env_file:
             with open(env_file, "a") as myfile:
                 myfile.write("has_updated=True\n")
+                myfile.write(f"filename={fn_version}")
         else:
             print("GITHUB_ENV not set")
     else:

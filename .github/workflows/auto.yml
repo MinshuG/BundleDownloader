@@ -29,25 +29,7 @@ jobs:
         run: |
           python autodownloader.py
 
-      - shell: pwsh
-        id: check_file_changed
-        run: |
-          # Diff HEAD with the previous commit
-          $diff = git diff --name-only
-          echo $diff
-
-          # Check if a with the .md extension has changed (added, modified, deleted)
-          $SourceDiff = $diff | Where-Object { $_ -match '.md$' }
-          $HasDiff = $SourceDiff.Length -gt 0
-
-          # Set the output named "readme_changed"
-          echo "has_updated=$HasDiff" >> $GITHUB_ENV
-          echo $HasDiff
-      - shell: pwsh
-        run: |
-          echo "has_updated: $env:has_updated"
-
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Automated Change
+          commit_message: ${{ env.filename }}
         if: env.has_updated == 'True'
