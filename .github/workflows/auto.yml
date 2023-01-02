@@ -43,4 +43,4 @@ jobs:
         with:
           commit_message: Automated Change
           file_pattern:  ContentManifests/*
-        if: env.action_state == 'True'
+        if: env.has_updated == 'True'
