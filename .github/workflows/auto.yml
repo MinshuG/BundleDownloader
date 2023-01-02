@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "0 0 * * *" # runs at 00:00 UTC everyday
 
+env:
+  has_updated: false
+
 jobs:
   checkforupdate:
     runs-on: ubuntu-latest
@@ -27,17 +30,17 @@ jobs:
         id: check_file_changed
         run: |
           # Diff HEAD with the previous commit
-          $diff = git diff --name-only HEAD^ HEAD
+          $diff = git diff --name-only
 
           # Check if a with the .md extension has changed (added, modified, deleted)
           $SourceDiff = $diff | Where-Object { $_ -match '.md$' }
           $HasDiff = $SourceDiff.Length -gt 0
 
           # Set the output named "readme_changed"
-          Write-Host "::set-output name=readme_changed::$HasDiff"
+          echo "has_updated=$HasDiff" >> $GITHUB_ENV
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Automated Change
           file_pattern:  ContentManifests/*
-        if: steps.check_file_changed.outputs.readme_changed == 'True'
+        if: env.action_state == 'True'
