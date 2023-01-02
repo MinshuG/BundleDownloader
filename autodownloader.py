@@ -16,7 +16,7 @@ CREDENTIAL_URL = "https://account-public-service-prod03.ol.epicgames.com/account
 EGS_TOKEN = f"basic {base64.b64encode(bytes('3446cd72694c4a4485d81b77adbb2141:9209d4a5e25a457fb9b07489d313b41a'.encode('ascii'))).decode('ascii')}"
 
 # no comments on code quality pls
-USE_NEW_MANIFEST = False
+USE_NEW_MANIFEST = True
 if USE_NEW_MANIFEST:
     def getSignedDownloadUrl(platform, catalogItemId, namespace, appName, label, clientDetails): # ??
         base = "https://launcher-public-service-prod06.ol.epicgames.com/launcher/"
@@ -49,7 +49,7 @@ def get_manifest_info(token, manifest_url, label="Live"):
     return data.json()
 
 def get_chunk_manifest(manifest_file, isContentBuildManifest=False):
-    if USE_NEW_MANIFEST and not isContentBuildManifest:
+    if USE_NEW_MANIFEST or not isContentBuildManifest:
         for element in manifest_file["elements"]:
             if element["appName"] == "Fortnite":
                 for distribution in element["manifests"]:
@@ -126,6 +126,7 @@ def do_rest_stuff(content_manifest, fn_version):
         print("{} already exists".format(filename))
 
 def main():
+    os.makedirs("temp", exist_ok=True)
     buildinfo, version = get_build_info()
     print("Build:", buildinfo.read("Content", "Build"))
     label = buildinfo.read("Content", "Label")[0]

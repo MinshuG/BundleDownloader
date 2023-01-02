@@ -2,7 +2,6 @@ build/
 __pycache__/
 *.spec
 downloads/
-autodownloader.py
 temp/
 .idea
 dt.info
