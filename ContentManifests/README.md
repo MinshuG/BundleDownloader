@@ -17,3 +17,4 @@
 |++Fortnite+Release-23.20-CL-23659353-Windows|x6KzvidNNmfFzEWD6UavoNRXzXdhVw|[Manifest](https://github.com/MinshuG/BundleDownloader/blob/master/ContentManifests/x6KzvidNNmfFzEWD6UavoNRXzXdhVw.manifest?raw=true)|
 |++Fortnite+Release-23.20-CL-23783097-Windows|xGGX-hoo0ZBsBwNJGUyRbVug4lCDfQ|[Manifest](https://github.com/MinshuG/BundleDownloader/blob/master/ContentManifests/xGGX-hoo0ZBsBwNJGUyRbVug4lCDfQ.manifest?raw=true)|
 |++Fortnite+Release-23.30-CL-23901854-Windows|YjuTSn2bz7ZekpZe5kOPMKKGz9ENHw|[Manifest](https://github.com/MinshuG/BundleDownloader/blob/master/ContentManifests/YjuTSn2bz7ZekpZe5kOPMKKGz9ENHw.manifest?raw=true)|
+|++Fortnite+Release-23.30-CL-23986860-Windows|Onwh0Mm-UiWUbLkaUUqhEIrkwQxPOQ|[Manifest](https://github.com/MinshuG/BundleDownloader/blob/master/ContentManifests/Onwh0Mm-UiWUbLkaUUqhEIrkwQxPOQ.manifest?raw=true)|
