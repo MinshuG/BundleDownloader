@@ -39,3 +39,4 @@
 |++Fortnite+Release-25.10-CL-26000959-Windows|zWLs_nkItuSYf5pDOk6miVWwFbDtDA|[Manifest](https://github.com/MinshuG/BundleDownloader/blob/master/ContentManifests/zWLs_nkItuSYf5pDOk6miVWwFbDtDA.manifest?raw=true)|
 |++Fortnite+Release-25.11-CL-26171015-Windows|EEsISaz5ba2Ghj_k1k6HGStqEt-Iuw|[Manifest](https://github.com/MinshuG/BundleDownloader/blob/master/ContentManifests/EEsISaz5ba2Ghj_k1k6HGStqEt-Iuw.manifest?raw=true)|
 |++Fortnite+Release-25.20-CL-26474516-Windows|GLbw0xRqufdNaCIiyUK1AGc14cXBug|[Manifest](https://github.com/MinshuG/BundleDownloader/blob/master/ContentManifests/GLbw0xRqufdNaCIiyUK1AGc14cXBug.manifest?raw=true)|
+|++Fortnite+Release-25.20-CL-26629111-Windows|P3KdmKDxZTptyWXeq0K2vEwpciJIKw|[Manifest](https://github.com/MinshuG/BundleDownloader/blob/master/ContentManifests/P3KdmKDxZTptyWXeq0K2vEwpciJIKw.manifest?raw=true)|
